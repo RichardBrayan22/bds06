@@ -1,6 +1,11 @@
 package com.devsuperior.movieflix.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import com.devsuperior.movieflix.entities.Movie;
+import com.devsuperior.movieflix.entities.Review;
 
 public class MovieDTO {
 
@@ -13,8 +18,10 @@ public class MovieDTO {
 
     private GenreDTO genre;
 
-    public MovieDTO() {
+    private List<ReviewDTO> reviews = new ArrayList<>();
 
+    public MovieDTO(Set<Review> reviews) {
+        reviews.forEach(cat -> this.reviews.add(new ReviewDTO(cat)));
     }
 
     public MovieDTO(Long id, String title, String subTitle, Integer year, String imgUrl, String synopsis) {
@@ -24,6 +31,10 @@ public class MovieDTO {
         this.year = year;
         this.imgUrl = imgUrl;
         this.synopsis = synopsis;
+    }
+
+    public MovieDTO(List<Review> reviews) {
+        reviews.forEach(cat -> this.reviews.add(new ReviewDTO(cat)));
     }
 
     public MovieDTO(Movie entity) {
@@ -92,6 +103,10 @@ public class MovieDTO {
 
     public void setGenre(GenreDTO genre) {
         this.genre = genre;
+    }
+
+    public List<ReviewDTO> getReviews() {
+        return reviews;
     }
 
     @Override
