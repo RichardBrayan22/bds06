@@ -17,12 +17,13 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
 	@Autowired
 	private Environment env;
-	
+
 	@Autowired
 	private JwtTokenStore tokenStore;
-	
+
 	private static final String[] PUBLIC = { "/oauth/token", "/h2-console/**" };
-	
+	private static final String[] MEMBER_VISITOR = { "/movies/**" };
+
 	@Override
 	public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
 		resources.tokenStore(tokenStore);
@@ -35,9 +36,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		if (Arrays.asList(env.getActiveProfiles()).contains("test")) {
 			http.headers().frameOptions().disable();
 		}
-		
+
 		http.authorizeRequests()
-		.antMatchers(PUBLIC).permitAll()
-		.anyRequest().authenticated();
-	}	
+				.antMatchers(PUBLIC).permitAll()
+				.antMatchers(MEMBER_VISITOR).hasAnyRole("MEMBER", "VISITOR")
+				.anyRequest().authenticated();
+	}
 }
