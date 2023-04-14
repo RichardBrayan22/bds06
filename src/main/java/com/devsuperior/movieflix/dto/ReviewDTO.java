@@ -27,6 +27,7 @@ public class ReviewDTO {
         id = entity.getId();
         text = entity.getText();
         movieId = entity.getMovie().getId();
+        user = new UserDTO(entity.getUser());
     }
 
     public Long getId() {
